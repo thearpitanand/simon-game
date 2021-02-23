@@ -4,7 +4,7 @@ var userClickedPattern = [];
 var keyPressed = true;
 var level = 0;
 
-//Taking User Input 
+//Taking User Input
 $(".btn").click(function (event) {
   var userChosenColour = event.target.id;
   userClickedPattern.push(userChosenColour);
@@ -21,7 +21,24 @@ $("body").keypress(function () {
   }
 });
 
-//function to push new values in the game pattern  
+//added button when width of the screen is lower then 991px
+if ($(window).width() <= 991) {
+  $(".refreshButton").removeClass("hidden");
+  $("h1").text("Press Button");
+}
+
+//Refresh button will be functional when ever screen width is below 991px
+if ($(window).width() <= 991) {
+  $(".refreshButton").click(function () {
+    if (keyPressed) {
+      keyPressed = false;
+      nextSequence();
+      $(".refreshButton").addClass("hidden");
+    }
+  });
+}
+
+//function to push new values in the game pattern
 function nextSequence() {
   userClickedPattern = [];
   level++;
@@ -59,8 +76,14 @@ function checkAnswer(currentLevel) {
       }, 1000);
     }
   } else {
-    $("h1").text("Game Over, Press Any Key to Restart");
+    $("h1").text("Game Over, Press Any Key to Restart.");
     playSound("wrong");
+    //Activating the refresh button when screen width is below 991px
+    if ($(window).width() <= 991) {
+      $("h1").text("Game Over,Press Button.");
+      $(".refreshButton").text("Click Hear to Start The Game Again");
+      $(".refreshButton").removeClass("hidden");
+    }
     $("body").addClass("game-over");
     setTimeout(function () {
       $("body").removeClass("game-over");
